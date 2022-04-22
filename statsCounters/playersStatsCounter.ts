@@ -2,10 +2,15 @@ import Matches, { Match } from "../models/matches";
 import Players, { Player } from "../models/players";
 import { PlayerStats } from "../types/playerStats.type";
 
-export async function playersStatsCounter(): Promise<PlayerStats> {
-  const matches: Match[] = await Matches.find({});
-  const players: Player[] = await Players.find({});
+type TournamentStatsCounterProps = {
+  matches: Match[];
+  players: Player[];
+};
 
+export function playersStatsCounter({
+  matches,
+  players,
+}: TournamentStatsCounterProps): PlayerStats {
   const playerTournaments: { [playerName: string]: Set<string> } = {};
 
   const playerStats: PlayerStats = {};
@@ -79,8 +84,8 @@ export async function playersStatsCounter(): Promise<PlayerStats> {
       }
     }
   });
-    players.forEach((player) => {
-        playerStats[player.name].tournaments = playerTournaments[player.name].size;
-    });
+  players.forEach((player) => {
+    playerStats[player.name].tournaments = playerTournaments[player.name].size;
+  });
   return playerStats;
 }

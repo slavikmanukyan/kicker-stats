@@ -1,43 +1,43 @@
-import React, { useMemo } from "react";
-import {
-  TableContainer,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  chakra,
-} from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-import { useTable, useSortBy, TableState } from "react-table";
-
-import { PlayerStats } from "../../types/playerStats.type";
-import { PlayerStatsColumns } from "../../lib/constants";
+import {
+  chakra,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
+import React, { useMemo } from "react";
+import { TableState, useSortBy, useTable } from "react-table";
+import {
+  TournamentStats,
+  TournamentStatsData,
+} from "../../types/tournamentStats.type";
+import { TournamentStatsColumns } from "./columns";
 
 type Props = {
-  playerStats: PlayerStats;
+  tournamentStats: TournamentStats;
 };
 
-export default function PlayersStatsTable({ playerStats }: Props) {
-  const data = useMemo<
-    Array<PlayerStats[keyof PlayerStats] & { name: string }>
-  >(
+export default function TournamentStatsTable({ tournamentStats }: Props) {
+  const data = useMemo<Array<TournamentStatsData & { name: string }>>(
     () =>
-      Object.entries(playerStats).map(([name, stats]) => ({
+      Object.entries(tournamentStats).map(([name, stats]) => ({
         name,
         ...stats,
       })),
-    [playerStats]
+    [tournamentStats]
   );
   const initialState = useMemo<
-    Partial<TableState<PlayerStats[keyof PlayerStats] & { name: string }>>
+    Partial<TableState<TournamentStatsData & { name: string }>>
   >(
     () => ({
       hiddenColumns: [],
       sortBy: [
         {
-          id: "tournaments",
+          id: "date",
           desc: true,
         },
       ],
@@ -47,7 +47,7 @@ export default function PlayersStatsTable({ playerStats }: Props) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
       {
-        columns: PlayerStatsColumns,
+        columns: TournamentStatsColumns,
         data,
         initialState,
       },
@@ -59,7 +59,7 @@ export default function PlayersStatsTable({ playerStats }: Props) {
       <Table {...getTableProps()} variant="striped" colorScheme="gray">
         <Thead bg="gray.200">
           {headerGroups.map((headerGroup) => (
-            <Tr key={headerGroup.id || 'headerGroup'}>
+            <Tr key={headerGroup.id || "headerGroup"}>
               <Th>#</Th>
               {headerGroup.headers.map((column) => {
                 const { key, ...headerProps } = column.getHeaderProps(
@@ -86,18 +86,13 @@ export default function PlayersStatsTable({ playerStats }: Props) {
         <Tbody {...getTableBodyProps()}>
           {rows.map((row, index) => {
             prepareRow(row);
-
-            const { key, ...rowProps } = row.getRowProps();
             return (
-              <Tr
-                {...rowProps}
-                key={key}
-              >
+              <Tr {...row.getRowProps()} key={row.id}>
                 <Td>{index + 1}</Td>
                 {row.cells.map((cell) => (
                   <Td
                     {...cell.getCellProps()}
-                    key={key + cell.column.id}
+                    key={row.id + cell.column.id}
                     isNumeric={cell.column.isNumeric}
                   >
                     {cell.render("Cell")}

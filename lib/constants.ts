@@ -1,6 +1,7 @@
 import React from "react";
 import { Column } from "react-table";
 import { PlayerStats } from "../types/playerStats.type";
+import { TournamentStatsData } from "../types/tournamentStats.type";
 
 export type PlayerStateKey = keyof PlayerStats[keyof PlayerStats];
 
@@ -53,6 +54,7 @@ export const PlayerStatsColumns: Column<
     accessor: (row: PlayerStats[keyof PlayerStats]) =>
       ((row.wins / row.matches) * 100).toFixed(2),
     isNumeric: true,
+    id: "wp",
     sortDescFirst: true,
   },
   {
@@ -65,6 +67,16 @@ export const PlayerStatsColumns: Column<
     Header: "Goals Against",
     accessor: "goalsAgainst",
     isNumeric: true,
+  },
+  {
+    Header: "Goal Difference",
+    accessor: (row: PlayerStats[keyof PlayerStats]) =>
+      row.goalsFor - row.goalsAgainst,
+    isNumeric: true,
+    id: "goalDifference",
+    sortType: (a, b) => {
+      return a.values.goalDifference > b.values.goalDifference ? -1 : 1;
+    },
   },
   {
     Header: "Finals",

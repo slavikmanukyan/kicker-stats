@@ -1,26 +1,43 @@
 import Head from "next/head";
+import {
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
+
+import PlayersStatsTable from "../components/PlayersStatsTable";
 
 import initDB from "../lib/db";
-import { playersStatsCounter } from "../statsCounters/playersStatsCounter.tsx";
+import getDbData from "../lib/getDbData";
+import { playersStatsCounter } from "../statsCounters/playersStatsCounter";
+import { tournamentsStatsCounter } from "../statsCounters/tournamentsStatsCounter";
 import { PlayerStats } from "../types/playerStats.type";
-import { Heading } from "@chakra-ui/react";
-import PlayersStatsTable from "../components/PlayersStatsTable";
+import TournamentStatsTable from "../components/TournamentStatsTable";
+import { TournamentStats } from "../types/tournamentStats.type";
 
 export async function getStaticProps() {
   await initDB();
-  const playerStats = await playersStatsCounter();
+  const dbData = await getDbData();
+  const playerStats = playersStatsCounter(dbData);
+  const tournamentStats = tournamentsStatsCounter(dbData);
+
   return {
     props: {
       playerStats,
+      tournamentStats,
     },
   };
 }
 
 type Props = {
   playerStats: PlayerStats;
+  tournamentStats: TournamentStats;
 };
 
-const Home: React.FC<Props> = ({ playerStats }) => {
+const Home: React.FC<Props> = ({ playerStats, tournamentStats }) => {
   return (
     <>
       <Head>
@@ -30,8 +47,23 @@ const Home: React.FC<Props> = ({ playerStats }) => {
       </Head>
 
       <main>
-        <Heading textAlign="center" py={10}>Kicker Stats</Heading>
-        <PlayersStatsTable playerStats={playerStats} />
+        <Heading textAlign="center" py={10}>
+          Kicker Stats
+        </Heading>
+        <Tabs variant="enclosed">
+          <TabList>
+            <Tab>Player Stats</Tab>
+            <Tab>Tournament Stats</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <PlayersStatsTable playerStats={playerStats} />
+            </TabPanel>
+            <TabPanel>
+              <TournamentStatsTable tournamentStats={tournamentStats} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </main>
     </>
   );

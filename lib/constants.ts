@@ -49,6 +49,13 @@ export const PlayerStatsColumns: Column<
     isNumeric: true,
   },
   {
+    Header: "WP",
+    accessor: (row: PlayerStats[keyof PlayerStats]) =>
+      ((row.wins / row.matches) * 100).toFixed(2),
+    isNumeric: true,
+    sortDescFirst: true,
+  },
+  {
     Header: "Goals For",
     accessor: "goalsFor",
     isNumeric: true,

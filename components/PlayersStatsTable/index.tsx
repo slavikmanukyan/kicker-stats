@@ -56,10 +56,11 @@ export default function PlayersStatsTable({ playerStats }: Props) {
 
   return (
     <TableContainer>
-      <Table {...getTableProps()}>
-        <Thead>
+      <Table {...getTableProps()} variant="striped" colorScheme="gray">
+        <Thead bg="gray.200">
           {headerGroups.map((headerGroup) => (
             <Tr key={headerGroup.id}>
+              <Th>#</Th>
               {headerGroup.headers.map((column) => {
                 const { key, ...headerProps } = column.getHeaderProps(
                   column.getSortByToggleProps()
@@ -67,15 +68,15 @@ export default function PlayersStatsTable({ playerStats }: Props) {
                 return (
                   <Th key={key} {...headerProps} isNumeric={column.isNumeric}>
                     {column.render("Header")}
-                    <chakra.span pl="4">
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
+                    {column.isSorted ? (
+                      <chakra.span pl="2">
+                        {column.isSortedDesc ? (
                           <TriangleDownIcon aria-label="sorted descending" />
                         ) : (
                           <TriangleUpIcon aria-label="sorted ascending" />
-                        )
-                      ) : null}
-                    </chakra.span>
+                        )}
+                      </chakra.span>
+                    ) : null}
                   </Th>
                 );
               })}
@@ -83,10 +84,15 @@ export default function PlayersStatsTable({ playerStats }: Props) {
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {rows.map((row, index) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={row.id}>
+              <Tr
+                {...row.getRowProps()}
+                key={row.id}
+                // bg={index % 2 === 0 ? "gray.50" : "gray.200"}
+              >
+                <Td>{index + 1}</Td>
                 {row.cells.map((cell) => (
                   <Td
                     {...cell.getCellProps()}

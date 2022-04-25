@@ -34,10 +34,19 @@ export function playersStatsCounter({
       playerTournaments[match.player2].add(match.tournament);
       playerTournaments[match.player4].add(match.tournament);
     }
+    playerStats[match.player1].goalsFor += match.score1;
+    playerStats[match.player1].goalsAgainst += match.score2;
+    playerStats[match.player3].goalsFor += match.score2;
+    playerStats[match.player3].goalsAgainst += match.score1;
+    if (match.player2 && match.player4) {
+      playerStats[match.player2].goalsFor += match.score1;
+      playerStats[match.player2].goalsAgainst += match.score2;
+      playerStats[match.player4].goalsFor += match.score2;
+      playerStats[match.player4].goalsAgainst += match.score1;
+    }
     if (match.score1 > match.score2) {
       playerStats[match.player1].wins++;
-      playerStats[match.player1].goalsFor += match.score1;
-      playerStats[match.player1].goalsAgainst += match.score2;
+
       playerStats[match.player1].matches++;
       if (match.final) {
         playerStats[match.player1].tournamentsWon++;
@@ -45,23 +54,15 @@ export function playersStatsCounter({
         playerStats[match.player3].finals++;
       }
       playerStats[match.player3].losses++;
-      playerStats[match.player3].goalsFor += match.score2;
-      playerStats[match.player3].goalsAgainst += match.score1;
       playerStats[match.player3].matches++;
       if (match.player2 && match.player4) {
         playerStats[match.player2].wins++;
-        playerStats[match.player2].goalsFor += match.score1;
-        playerStats[match.player2].goalsAgainst += match.score2;
         playerStats[match.player2].matches++;
         playerStats[match.player4].losses++;
-        playerStats[match.player4].goalsFor += match.score2;
-        playerStats[match.player4].goalsAgainst += match.score1;
         playerStats[match.player4].matches++;
       }
     } else {
       playerStats[match.player1].losses++;
-      playerStats[match.player1].goalsFor += match.score2;
-      playerStats[match.player1].goalsAgainst += match.score1;
       playerStats[match.player1].matches++;
       if (match.final) {
         playerStats[match.player3].tournamentsWon++;
@@ -69,17 +70,11 @@ export function playersStatsCounter({
         playerStats[match.player3].finals++;
       }
       playerStats[match.player3].wins++;
-      playerStats[match.player3].goalsFor += match.score1;
-      playerStats[match.player3].goalsAgainst += match.score2;
       playerStats[match.player3].matches++;
       if (match.player2 && match.player4) {
         playerStats[match.player2].losses++;
-        playerStats[match.player2].goalsFor += match.score2;
-        playerStats[match.player2].goalsAgainst += match.score1;
         playerStats[match.player2].matches++;
         playerStats[match.player4].wins++;
-        playerStats[match.player4].goalsFor += match.score1;
-        playerStats[match.player4].goalsAgainst += match.score2;
         playerStats[match.player4].matches++;
       }
     }

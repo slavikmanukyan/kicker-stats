@@ -86,13 +86,14 @@ export default function TournamentStatsTable({ tournamentStats }: Props) {
         <Tbody {...getTableBodyProps()}>
           {rows.map((row, index) => {
             prepareRow(row);
+            const { key, ...rowProps } = row.getRowProps();
             return (
-              <Tr {...row.getRowProps()} key={row.id}>
-                <Td>{index + 1}</Td>
+              <Tr {...rowProps} key={key}>
+                <Td key="index">{index + 1}</Td>
                 {row.cells.map((cell) => (
                   <Td
                     {...cell.getCellProps()}
-                    key={row.id + cell.column.id}
+                    key={key + cell.column.id}
                     isNumeric={cell.column.isNumeric}
                   >
                     {cell.render("Cell")}

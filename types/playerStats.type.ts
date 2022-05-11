@@ -1,12 +1,16 @@
+export interface PlayerStatsData {
+    wins: number;
+    losses: number;
+    goalsFor: number;
+    goalsAgainst: number;
+    matches: number;
+    tournaments: number;
+    tournamentsWon: number;
+    finals: number;
+};
+
 export interface PlayerStats {
-    [playerName: string]: {
-        wins: number;
-        losses: number;
-        goalsFor: number;
-        goalsAgainst: number;
-        matches: number;
-        tournaments: number;
-        tournamentsWon: number;
-        finals: number;
-    };
+    [playerName: string]: PlayerStatsData;
 }
+
+export type PlayerStatsKey = keyof PlayerStats;

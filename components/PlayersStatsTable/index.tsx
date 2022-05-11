@@ -14,6 +14,7 @@ import { useTable, useSortBy, TableState } from "react-table";
 
 import { PlayerStats } from "../../types/playerStats.type";
 import { PlayerStatsColumns } from "../../lib/constants";
+import Link from "next/link";
 
 type Props = {
   playerStats: PlayerStats;
@@ -56,10 +57,10 @@ export default function PlayersStatsTable({ playerStats }: Props) {
 
   return (
     <TableContainer>
-      <Table {...getTableProps()} variant="striped" colorScheme="gray">
+      <Table {...getTableProps()}>
         <Thead bg="gray.200">
           {headerGroups.map((headerGroup) => (
-            <Tr key={headerGroup.id || 'headerGroup'}>
+            <Tr key={headerGroup.id || "headerGroup"}>
               <Th>#</Th>
               {headerGroup.headers.map((column) => {
                 const { key, ...headerProps } = column.getHeaderProps(
@@ -89,21 +90,25 @@ export default function PlayersStatsTable({ playerStats }: Props) {
 
             const { key, ...rowProps } = row.getRowProps();
             return (
-              <Tr
-                {...rowProps}
-                key={key}
-              >
-                <Td>{index + 1}</Td>
-                {row.cells.map((cell) => (
-                  <Td
-                    {...cell.getCellProps()}
-                    key={key + cell.column.id}
-                    isNumeric={cell.column.isNumeric}
-                  >
-                    {cell.render("Cell")}
-                  </Td>
-                ))}
-              </Tr>
+              <Link key={key} href={`/${row.cells[0].value}`} passHref>
+                <Tr
+                  {...rowProps}
+                  cursor="pointer"
+                  bg={index % 2 ? "gray.50" : "gray.200"}
+                  _hover={{ background: "gray.400" }}
+                >
+                  <Td>{index + 1}</Td>
+                  {row.cells.map((cell) => (
+                    <Td
+                      {...cell.getCellProps()}
+                      key={key + cell.column.id}
+                      isNumeric={cell.column.isNumeric}
+                    >
+                      {cell.render("Cell")}
+                    </Td>
+                  ))}
+                </Tr>
+              </Link>
             );
           })}
         </Tbody>

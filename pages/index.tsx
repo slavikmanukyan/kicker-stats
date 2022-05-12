@@ -50,7 +50,7 @@ const Home: React.FC<Props> = ({ playerStats, tournamentStats }) => {
         <Heading textAlign="center" py={10}>
           Kicker Stats
         </Heading>
-        <Tabs variant="enclosed">
+        <Tabs variant="enclosed" isLazy id="tabs">
           <TabList>
             <Tab>Player Stats</Tab>
             <Tab>Tournament Stats</Tab>

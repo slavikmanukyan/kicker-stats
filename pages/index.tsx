@@ -17,17 +17,21 @@ import { tournamentsStatsCounter } from "../statsCounters/tournamentsStatsCounte
 import { PlayerStats } from "../types/playerStats.type";
 import TournamentStatsTable from "../components/TournamentStatsTable";
 import { TournamentStats } from "../types/tournamentStats.type";
+import { DuoStats, duoStatsCounter } from "../statsCounters/duoStatsCounter";
+import DuoStatsTable from "../components/DuoStatsTable";
 
 export async function getStaticProps() {
   await initDB();
   const dbData = await getDbData();
   const playerStats = playersStatsCounter(dbData);
   const tournamentStats = tournamentsStatsCounter(dbData);
+  const duoStats = duoStatsCounter(dbData.matches);
 
   return {
     props: {
       playerStats,
       tournamentStats,
+      duoStats,
     },
   };
 }
@@ -35,9 +39,10 @@ export async function getStaticProps() {
 type Props = {
   playerStats: PlayerStats;
   tournamentStats: TournamentStats;
+  duoStats: DuoStats;
 };
 
-const Home: React.FC<Props> = ({ playerStats, tournamentStats }) => {
+const Home: React.FC<Props> = ({ playerStats, tournamentStats, duoStats }) => {
   return (
     <>
       <Head>
@@ -53,11 +58,15 @@ const Home: React.FC<Props> = ({ playerStats, tournamentStats }) => {
         <Tabs variant="enclosed" isLazy id="tabs">
           <TabList>
             <Tab>Player Stats</Tab>
+            <Tab>DuoState</Tab>
             <Tab>Tournament Stats</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
               <PlayersStatsTable playerStats={playerStats} />
+            </TabPanel>
+            <TabPanel>
+              <DuoStatsTable duoStats={duoStats} />
             </TabPanel>
             <TabPanel>
               <TournamentStatsTable tournamentStats={tournamentStats} />

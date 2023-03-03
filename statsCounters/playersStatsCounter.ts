@@ -1,5 +1,5 @@
-import Matches, { Match } from "../models/matches";
-import Players, { Player } from "../models/players";
+import { Match } from "../models/matches";
+import { Player } from "../models/players";
 import { PlayerStats } from "../types/playerStats.type";
 
 type TournamentStatsCounterProps = {

@@ -58,7 +58,7 @@ const Home: React.FC<Props> = ({ playerStats, tournamentStats, duoStats }) => {
         <Tabs variant="enclosed" isLazy id="tabs">
           <TabList>
             <Tab>Player Stats</Tab>
-            <Tab>DuoState</Tab>
+            <Tab>Duo Stats</Tab>
             <Tab>Tournament Stats</Tab>
           </TabList>
           <TabPanels>
